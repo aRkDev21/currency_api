@@ -1,10 +1,6 @@
 {
-  "string": {
-    "username": "string",
-    "password": "string"
-  },
-  "a": {
-    "username": "a",
-    "password": "a"
+  "as": {
+    "username": "as",
+    "hashed_password": "$2b$12$ZxJfZvR7oSlQ3SW4zYBm9OdquFpkMaMAVfchixvmPdZfj/SZJi5dO"
   }
 }
