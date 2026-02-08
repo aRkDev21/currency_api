@@ -5,18 +5,17 @@ from fastapi import FastAPI, Depends
 
 from app.api.endpoints.auth import router as auth_router
 from app.api.endpoints.currency import router as currency_router
-from app.core.config import settings
 from app.core.security import decode_jwt_token
-from app.db.dao import dao
+from app.db.database import engine, Base
 from app.utils.external_api import currency_api
-
 
 
 @asynccontextmanager
 async def lifespan(app_: FastAPI):
+    async with engine.begin() as conn:
+        await conn.run_sync(Base.metadata.create_all)
     currency_api.session = aiohttp.ClientSession(headers=currency_api._headers)
     yield
-    dao.save()
     await currency_api.close()
 
 
