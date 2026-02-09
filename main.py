@@ -42,3 +42,38 @@ async def root():
 @app.get("/me")
 async def me(payload: dict = Depends(decode_jwt_token)):
     return payload
+
+if __name__ == "__main__":
+    import os
+
+    TARGET_DIRS = {"app", "tests"}
+    EXCLUDE_DIRS = {".venv", "venv", "__pycache__"}
+
+
+    def print_project_code(root="."):
+        for dirpath, dirnames, filenames in os.walk(root):
+            # исключаем ненужные директории
+            dirnames[:] = [d for d in dirnames if d not in EXCLUDE_DIRS]
+
+            # проверяем, что мы внутри app или tests
+            parts = set(dirpath.split(os.sep))
+            if not parts & TARGET_DIRS:
+                continue
+
+            for filename in filenames:
+                file_path = os.path.join(dirpath, filename)
+
+                try:
+                    with open(file_path, "r", encoding="utf-8") as f:
+                        content = f.read()
+                except Exception:
+                    continue  # бинарные файлы / ошибки чтения
+
+                print("\n" + "=" * 80)
+                print(f"FILE: {file_path}")
+                print("=" * 80)
+                print(content)
+
+
+    if __name__ == "__main__":
+        print_project_code()

@@ -7,6 +7,3 @@ class UserBase(BaseModel):
 
 class User(UserBase):
     password: str = Field(min_length=1, max_length=40)
-
-class UserDB(UserBase):
-    hashed_password: str
